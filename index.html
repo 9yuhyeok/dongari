@@ -397,6 +397,8 @@
     payload.r.forEach(x=>{if(x[0]==='MEDILUX')x[3]=3;if(x[0]==='책갈피')x[3]=7});
     const rows=[...payload.r.map((x,i)=>({name:x[0],type:TYPE[x[1]],scope:payload.m?.[i]?.p==='교내'?'교내':'연합',cat:payload.c[x[3]],deadline:x[4],regular:REGULAR_NOTES[i]??x[5],description:(payload.d?.[i]??payload.m?.[i]?.s)||'',kind:KIND[x[6]],slots:x[7]?x[7].split(','):[],schedule:payload.m?.[i]?.q||null,url:`https://everytime.kr/418752/v/${x[8]}`})),...ADDITIONAL_RECRUITMENTS.map(x=>({...x,kind:x.regular==='-'?'unknown':'known',slots:[],schedule:null}))];
     const sica=rows.find(x=>x.name==='SICA');if(sica)sica.scope='교내';
+    const ibiFall=rows.find(x=>x.name==='IBI FALL');if(ibiFall)Object.assign(ibiFall,{cat:'경영·마케팅·창업',deadline:'8월 18일',regular:'산업 리서치 프로젝트·행사 및 워크숍, 학기 초·말 Pitch Day',description:'글로벌 시장을 지향하는 대학생 및 신입 인재를 위한 프로젝트 기반 커리큘럼과 맞춤형 커리어 개발 프로그램을 제공하는 국제경영동아리입니다.',kind:'known'});
+    const skyIndex=rows.findIndex(x=>x.name==='SKY');if(skyIndex>=0)rows.splice(skyIndex,1);
     const deadlineAt=value=>{const date=value.match(/(\d+)월\s*(\d+)일/);if(!date)return null;const time=value.match(/(\d{1,2}):(\d{2})/);return new Date(2026,Number(date[1])-1,Number(date[2]),time?Number(time[1]):23,time?Number(time[2]):59)};
     const displayDeadline=value=>String(value).replace(/\s*까지/g,'').trim();
     const now=new Date();
